@@ -4,8 +4,8 @@ const ncMarketplaceAPI = axios.create({
     baseURL:'https://nc-marketplace-sem-3.onrender.com/api/'
 })
 
-export function getAllItems() {
-    return ncMarketplaceAPI.get("/items").then((response) => {
+export function getAllItems(category) {
+    return ncMarketplaceAPI.get("/items", {params: {category_name: category}}).then((response) => {
         return response.data.items
     })
 }
@@ -15,3 +15,5 @@ export function getAllCategories() {
         return response.data.categories
     })
 }
+
+

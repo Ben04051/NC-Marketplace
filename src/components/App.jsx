@@ -20,6 +20,7 @@ function App() {
       <Navigation />
       <Routes>
         <Route path="/ViewPage" element={<ViewPage />} />
+        {/* <Route path="/ViewPage/:category" element={<ViewPage />} /> */}
         <Route path="/SellPage" element={<SellPage />} />
         <Route path="/Orders" element={<Orders />} />
         <Route path="/Basket" element={<Basket />} />
