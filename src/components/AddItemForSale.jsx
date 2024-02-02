@@ -1,5 +1,6 @@
 
 import { useState } from "react"
+import { postItemForSale } from "../Utils/utils"
 
 export default function AddItemForSale() {
 const [itemName, setItemName] = useState("")
@@ -7,19 +8,42 @@ const [description, setDescription] = useState("")
 const [imgURL, setImageURL] = useState("")
 const [price, setPrice] = useState("")
 const [categoryName, setCategoryName] = useState("")
+const [error, setError] = useState(null)
+const [isError, setIsError] = useState(false)
 
 function textInput(event){
-    console.log(event.target)
-
-        if(event.target.id === "item_name"){
-            setItemName(event.target.id)
-        }
+    if(event.target.id === "item_name"){
+        setItemName(event.target.value)
+    }if(event.target.id === "description"){
+        setDescription(event.target.value)
+    }if(event.target.id === "img_url"){
+        setImageURL(event.target.value)
+    }if(event.target.id === "price"){
+        setPrice(event.target.value)
+    }if(event.target.id === "category_name"){
+        setCategoryName(event.target.value)
     }
-    
+}
 
-
+const onClickHandler = ((event) => {
+    event.preventDefault()
+    console.log(event.target)
+    const postObject = {item_name : itemName, description: description, img_url: imgURL, price : price, category_name : categoryName}
+    setItemName("")
+    setDescription("")
+    setImageURL("")
+    setPrice("")
+    setCategoryName("")
+    console.log(postObject)
+    postItemForSale(postObject).catch((error) => {
+        console.dir(error)
+        setIsError(true)
+        setError(error.message)
+    })
+})
 
     return (
+        <>
         <form>
             <fieldset>
             <label htmlFor="item_name" >Item Name: </label>
@@ -32,9 +56,11 @@ function textInput(event){
             <input id="price" type="number" value= {price} onChange={textInput} required></input> 
             <label htmlFor="category_name">Category: </label>
             <input id="category_name" type="text" value= {categoryName} onChange={textInput} required></input>
-            <button type="submit" id="submit">Sell Item</button> 
+            <button type="submit" id="submit" onClick={onClickHandler}>Sell Item</button> 
            </fieldset>
         </form>
+        {isError ? <Error error={error}/> : null }
+        </>
     )
 }
 

@@ -7,6 +7,7 @@ export default function ListItems() {
   const [allItems, setAllItems] = useState([]);
   const [category, setCategory] = useState(null);
   const [allCategories, setAllCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     getAllItems(category)
@@ -16,18 +17,24 @@ export default function ListItems() {
       .then(() => getAllCategories())
       .then((cat) => {
         setAllCategories(cat);
+        setIsLoading(false)
       });
   }, [category]);
 
   function selectCategory(event) {
+        setIsLoading(true)
+    if (event.target.value === "All"){
+        setCategory(null)
+    }else {
     setCategory(event.target.value);
+    }
   }
 
   return (
     <>
-      <label htmlFor="allCategories">Select Category:</label>
+        <label htmlFor="allCategories">Select Category:</label>
       <select name="allCategories" id="allCategories" onChange={selectCategory}>
-        <option value={null}>All</option>
+        <option value={undefined}>All</option>
         {allCategories.map((category) => {
           return (
             <option value={category.category_name} key={category.category_name}>
@@ -36,6 +43,7 @@ export default function ListItems() {
           );
         })}
       </select>
+      {isLoading ? <p>loading...</p> :
       <ul>
         {allItems.map((item) => {
           return (
@@ -51,7 +59,8 @@ export default function ListItems() {
             </li>
           );
         })}
-      </ul>
+      </ul>}
+
     </>
   );
 }

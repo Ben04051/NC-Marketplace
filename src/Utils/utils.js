@@ -16,4 +16,12 @@ export function getAllCategories() {
     })
 }
 
+export function postItemForSale(body) {
+    // const itemData = {}
+    return ncMarketplaceAPI.post("/items", body).then((body) => {
+        console.log(body)
+        return body
+    })
+}
+
 
